@@ -59,6 +59,8 @@ export class AuthService {
    * Restituisce tutti i ruoli dell'utente (per debug)
    */
   getRoles(): string[] {
-    return this.keycloak.realmAccess?.roles || [];
+    const roles = this.keycloak.realmAccess?.roles || [];
+    console.log("I tuoi ruoli su Keycloak sono:", roles); // <--- AGGIUNGI QUESTO
+    return roles;
   }
 }

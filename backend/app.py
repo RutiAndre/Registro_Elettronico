@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, g
 from flask_cors import CORS
+import requests
 from auth import require_auth, require_role
 from database import db  # Importiamo la nostra classe wrapper
 
@@ -47,6 +48,34 @@ def visualizza_miei():
     risultati = db.query(sql, (username_studente,))
     
     return jsonify({"voti": risultati})
+
+@app.route("/studenti", methods=["GET"])
+@require_auth
+@require_role("docente")
+def get_studenti_easy():
+    # 1. Chiediamo un token usando le tue credenziali admin (quelle del docker-compose)
+    token_url = f"{"https://fantastic-lamp-97vv7gx6xggvc76wv-8080.app.github.dev"}/realms/master/protocol/openid-connect/token"
+    data = {
+        'grant_type': 'password',
+        'client_id': 'admin-cli',
+        'username': 'admin',      # Lo username che usi per entrare in Keycloak
+        'password': 'admin'       # La password che usi per entrare in Keycloak
+    }
+    
+    admin_token = requests.post(token_url, data=data).json().get('access_token')
+
+    # 2. Usiamo quel token per leggere gli utenti del tuo Realm
+    users_url = f"{"https://fantastic-lamp-97vv7gx6xggvc76wv-8080.app.github.dev"}/admin/realms/{"registro"}/roles/studente/users"
+    headers = {'Authorization': f'Bearer {admin_token}'}
+    
+    users_data = requests.get(users_url, headers=headers).json()
+    
+    # Se per qualche motivo l'API fallisce, restituiamo una lista vuota
+    if not isinstance(users_data, list):
+        return jsonify({"studenti": []})
+
+    studenti = [{"username": u['username']} for u in users_data]
+    return jsonify({"studenti": studenti})
 
 if __name__ == "__main__":
     app.run(debug=True)

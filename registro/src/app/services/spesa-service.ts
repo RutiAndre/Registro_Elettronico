@@ -20,7 +20,7 @@ export class SpesaService {
   private keycloak = inject(Keycloak);
 
   // Modifica questo URL con quello del tuo backend Flask
-  private baseUrl = 'http://127.0.0.1:5000'; 
+  private baseUrl = 'https://fantastic-lamp-97vv7gx6xggvc76wv-5000.app.github.dev'; 
 
   /**
    * Genera gli header con il token JWT di Keycloak

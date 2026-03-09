@@ -4,7 +4,7 @@ import jwt
 import requests
 
 # CONFIGURAZIONE KEYCLOAK (Modifica con i tuoi dati!)
-KEYCLOAK_URL = "https://fantastic-lamp-97vv7gx6xggvc76wv-8080.app.github.dev/" # URL del tuo Keycloak
+KEYCLOAK_URL = "https://fantastic-lamp-97vv7gx6xggvc76wv-8080.app.github.dev" # URL del tuo Keycloak
 REALM = "registro"
 CLIENT_ID = "registro_elettronico"
 JWKS_URL = f"{KEYCLOAK_URL}/realms/{REALM}/protocol/openid-connect/certs"
