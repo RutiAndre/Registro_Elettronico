@@ -11,5 +11,10 @@ services:
       KC_PROXY_HEADERS: "xforwarded"
     ports:
       - "8080:8080"
+    volumes:
+      - keycloak_persistence:/opt/keycloak/data/
+      - ./keycloak-theme/registro-tema:/opt/keycloak/themes/registro-tema
     command:
       - start-dev
+volumes:
+  keycloak_persistence:
